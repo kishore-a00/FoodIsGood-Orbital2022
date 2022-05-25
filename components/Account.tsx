@@ -7,8 +7,8 @@ import { ApiError, Session } from "@supabase/supabase-js";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
-  const [website, setWebsite] = useState("");
-  const [avatar_url, setAvatarUrl] = useState("");
+  const [website, setWebsite] = useState(""); //Can remove
+  const [avatar_url, setAvatarUrl] = useState(""); //Can remove
 
   useEffect(() => {
     if (session) getProfile();
@@ -40,7 +40,7 @@ export default function Account({ session }: { session: Session }) {
       setLoading(false);
     }
   }
-
+  //Not needed as of now
   async function updateProfile({
     username,
     website,
