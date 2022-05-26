@@ -1,3 +1,4 @@
+//This is the sign in screen
 import React, { useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { supabase } from '../lib/supabase'
