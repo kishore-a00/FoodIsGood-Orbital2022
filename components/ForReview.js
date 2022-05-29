@@ -8,9 +8,7 @@ export default function ForReview() {
   const addReview = async () => {
     const { data, error } = await supabase
       .from("reviews")
-      .insert([{ id: 2, review: review }]);
-    console.log(data);
-    console.log(error);
+      .insert([{ review: review }]);
   };
 
   return (

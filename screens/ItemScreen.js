@@ -1,14 +1,18 @@
 import { Text, View, FlatList, StyleSheet, Image } from 'react-native'
+import  ForReview  from "../components/ForReview"
 
 //Text should show whatever the user selected previously
 //Text below should be fetched from database
-
+//unable to get picture from internet
 export const ItemScreen = () => {
     return(
         <View>
             <Text style={styles.headertext}> Black Pepper Chicken Chop </Text>
-            <Image source={require('../assets/icon.png')}
-                    style={{width: 300, height:300}}/>
+            <ForReview/>
+            <View style = {styles.image}>
+                <Image source={require('../assets/img_test.jpg')}
+                        style={{width: 200, height:200}}/>
+            </View>
             <FlatList
                 data = {[
                     {key: 'Review 1'},
@@ -47,6 +51,9 @@ const styles = StyleSheet.create(
             fontSize: 16,
             paddingHorizontal: 20,
             paddingVertical: 30,
+        },
+        image: {
+            alignSelf: 'center'
         }
     }
 );
