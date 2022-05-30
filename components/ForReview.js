@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, TextInput, Button } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  Keyboard,
+} from "react-native";
 import { supabase } from "../lib/supabase";
 
 export default function ForReview() {
@@ -9,6 +16,10 @@ export default function ForReview() {
     const { data, error } = await supabase
       .from("reviews")
       .insert([{ review: review }]);
+    this.textInput.clear();
+    Keyboard.dismiss();
+    console.log(data);
+    console.log(error);
   };
 
   return (
@@ -23,6 +34,9 @@ export default function ForReview() {
           marginBottom: 12,
           height: 70,
           justifyContent: "flex-start",
+        }}
+        ref={(input) => {
+          this.textInput = input;
         }}
       />
       <Button title="Submit" onPress={() => addReview()} />
