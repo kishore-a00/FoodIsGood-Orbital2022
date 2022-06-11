@@ -10,6 +10,7 @@ import { FacultyScreen } from "./screens/FacultyScreen"
 import { CanteenScreen } from "./screens/CanteenScreen"
 import { StallScreen } from './screens/StallScreen';
 import { ItemScreen } from './screens/ItemScreen';
+import { ReviewScreen } from './screens/ReviewScreen';
 import Auth from './components/Auth'
 //import Account from './components/Account' //work on it in the future
 
@@ -34,7 +35,8 @@ export default function App() {
           <Stack.Screen name="Faculty" component={FacultyScreen} />,      
           <Stack.Screen name="Canteen" component={CanteenScreen} />,  
           <Stack.Screen name="Stall" component={StallScreen} />,
-          <Stack.Screen name="Item" component={ItemScreen} /> ] 
+          <Stack.Screen name="Item" component={ItemScreen} />,
+          <Stack.Screen name="Review" component={ReviewScreen} /> ] 
         ) : (
           <Stack.Screen name="Auth" component={Auth} /> 
         )}  
