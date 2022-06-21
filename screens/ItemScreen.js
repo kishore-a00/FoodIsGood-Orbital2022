@@ -1,15 +1,15 @@
 import { Text, View, FlatList, StyleSheet, Image, TouchableOpacity } from "react-native";
-import ForReview from "../components/ForReview";
 import ListReview from "../components/ListReview";
-import { RatingSystem } from "../components/RatingSystem";
 
-//Text should show whatever the user selected previously
-//Text below should be fetched from database
-//unable to get picture from internet
-export const ItemScreen = ( {navigation} ) => {
+//Functionality to fetch image from the database
+//Check if the app works
+//Modify the list review function
+//Push to github
+
+export const ItemScreen = ( {navigation, route} ) => {
   return (
     <View>
-      <Text style={styles.headertext}> Black Pepper Chicken Chop </Text>
+      <Text style={styles.headertext}> {route.params.item_name} </Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Review")}>
         <Text> Post a review! </Text>
       </TouchableOpacity>

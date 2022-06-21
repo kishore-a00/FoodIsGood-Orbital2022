@@ -1,29 +1,45 @@
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { supabase } from "../lib/supabase";
 
-//Text should show whatever the user selected previously
-//Text below should be fetched from database
+//Stallscreen page which fetches all the items stored in the database based on the selected stall
+//can remove item_id which is routed
 
-export const StallScreen = ({ navigation }) => {
-    return(
-        <View style={styles.container}>
-            <Text style={styles.headerText}> Select an Item:</Text>
-            
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Item")}>
-                <Text style={styles.innerText}> Black Pepper Chicken Chop </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Item")}>
-                <Text style={styles.innerText}> Chicken Cutlet </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Item")}>
-                <Text style={styles.innerText}> Grilled Dory Fish </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Item")}>
-                <Text style={styles.innerText}> Fish & Chips </Text>
-              </TouchableOpacity>
-        </View>
-    );
+export const StallScreen = ({ navigation, route }) => {
+  const [item, setItem] = useState("");
+
+  const ShowItem = async () => {
+    let { data: item, error } = await supabase
+      .from("item")
+      .select("*")
+      .eq("stall_id", route.params.stall_id); 
+    return { item, error };
+  };
+  const LoadItem = async () => {
+    const { item, error } = await ShowItem();
+    setItem(item);
+    // console.log(item);
+    // console.log(error);
+  };
+
+  useEffect(() => {
+    LoadItem();
+  });
+  return (
+    <View style={styles.container}>
+       <Text style={styles.headerText}> Select an Item:</Text>
+      <FlatList
+        keyExtractor={(item) => item.item_id}
+        data={item}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Item", {item_id: item.item_id, item_name: item.item_name})}>
+            <Text>{item.item_name}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -31,7 +47,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
       paddingHorizontal: 2
     },
-    button: {
+    item: {
       alignItems: "center",
       backgroundColor: '#8DA242',
       padding: 20,

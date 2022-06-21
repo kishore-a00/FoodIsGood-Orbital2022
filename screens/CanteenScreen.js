@@ -1,34 +1,44 @@
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
-//Text should show whatever the user selected previously
-//Text below should be fetched from database
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { supabase } from "../lib/supabase";
 
-export const CanteenScreen = ({ navigation }) => {
-    return(
-        <View style={styles.container}>
-            <Text style={styles.headerText}> Select a Stall:</Text>
-            
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Western </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Mixed Rice </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Indian </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Chicken Rice </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Noodles </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Stall")}>
-                <Text style={styles.innerText}> Mala Hotpot </Text>
-              </TouchableOpacity>
-        </View>
-    );
+//Canteenscreen page which fetches all the stalls stored in the database based on the selected canteen
+
+export const CanteenScreen = ({ navigation, route }) => {
+  const [stall, setStall] = useState("");
+
+  const ShowStall = async () => {
+    let { data: stall, error } = await supabase
+      .from("stall")
+      .select("*")
+      .eq("canteen_id", route.params.canteen_id); 
+    return { stall, error };
+  };
+  const LoadStall = async () => {
+    const { stall, error } = await ShowStall();
+    setStall(stall);
+    // console.log(stall);
+    // console.log(error);
+  };
+
+  useEffect(() => {
+    LoadStall();
+  });
+  return (
+    <View style={styles.container}>
+       <Text style={styles.headerText}> Select a Stall:</Text>
+      <FlatList
+        keyExtractor={(item) => item.stall_id}
+        data={stall}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Stall", {stall_id: item.stall_id})}>
+            <Text>{item.stall_name}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -36,7 +46,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
       paddingHorizontal: 2
     },
-    button: {
+    item: {
       alignItems: "center",
       backgroundColor: '#8DA242',
       padding: 20,

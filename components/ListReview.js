@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../lib/supabase";
 
 export default function ListReview() {
