@@ -1,52 +1,46 @@
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../lib/supabase";
-//Buttons to access the various faculty pages
-//Need to implement feature of going to Faculty page and it rendering based on faculty selected
-//Text below should be fetched from database
+
+//Homescreen page which fetches all the faculties stored in the database
+
 export const HomeScreen = ({ navigation }) => {
+  const [faculty, setFaculty] = useState("");
+
+  const ShowFaculty = async () => {
+    let { data: faculty, error } = await supabase
+      .from("faculty")
+      .select("*");
+    return { faculty, error };
+  };
+  const LoadFaculty = async () => {
+    const { faculty, error } = await ShowFaculty();
+    setFaculty(faculty);
+    // console.log(faculty);
+    // console.log(error);
+  };
+
+  useEffect(() => {
+    LoadFaculty();
+  });
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}> Select a Faculty:</Text>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Faculty")}
-      >
-        <Text style={styles.innerText}> Engineering </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Faculty")}
-      >
-        <Text style={styles.innerText}> Science </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Faculty")}
-      >
-        <Text style={styles.innerText}> Arts & Social Sciences </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Faculty")}
-      >
-        <Text style={styles.innerText}> Business </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Faculty")}
-      >
-        <Text style={styles.innerText}> Medicine </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.outbutton}
-        onPress={() => supabase.auth.signOut()}
-      >
+       <Text style={styles.headerText}> Select a Faculty:</Text>
+      <FlatList
+        keyExtractor={(item) => item.faculty_id} 
+        data={faculty}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Faculty", {faculty_id: item.faculty_id} )}>
+            <Text>{item.faculty_name}</Text>
+          </TouchableOpacity>
+        )}
+      />
+      <TouchableOpacity style={styles.outbutton} onPress={() => supabase.auth.signOut()}>
         <Text style={styles.innerText}> Sign Out! </Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 2,
   },
-  button: {
+  item: {
     alignItems: "center",
     backgroundColor: "#8DA242",
     padding: 20,

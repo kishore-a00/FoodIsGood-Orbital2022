@@ -1,29 +1,44 @@
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { supabase } from "../lib/supabase";
 
-//Text should show whatever the user selected previously
-//Text below should be fetched from database
+//Facultyscreen page which fetches all the canteens stored in the database based on the selected faculty
 
-export const FacultyScreen = ({ navigation }) => {
-    return(
-        <View style={styles.container}>
-            <Text style={styles.headerText}> Select a Canteen:</Text>
-            
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Canteen")}>
-                <Text style={styles.innerText}> Techno Edge </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Canteen")}>
-                <Text style={styles.innerText}> Bistro Box </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Canteen")}>
-                <Text style={styles.innerText}> LiHO Tea </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Canteen")}>
-                <Text style={styles.innerText}> Starbucks </Text>
-              </TouchableOpacity>
-        </View>
-    );
+export const FacultyScreen = ({ navigation, route }) => {
+  const [canteen, setCanteen] = useState("");
+
+  const ShowCanteen = async () => {
+    let { data: canteen, error } = await supabase
+      .from("canteen")
+      .select("*")
+      .eq("faculty_id", route.params.faculty_id); 
+    return { canteen, error };
+  };
+  const LoadCanteen = async () => {
+    const { canteen, error } = await ShowCanteen();
+    setCanteen(canteen);
+    // console.log(canteen);
+    // console.log(error);
+  };
+
+  useEffect(() => {
+    LoadCanteen();
+  });
+  return (
+    <View style={styles.container}>
+       <Text style={styles.headerText}> Select a Canteen:</Text>
+      <FlatList
+        keyExtractor={(item) => item.canteen_id}
+        data={canteen}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Canteen", {canteen_id: item.canteen_id})}>
+            <Text>{item.canteen_name}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -31,7 +46,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
       paddingHorizontal: 2
     },
-    button: {
+    item: {
       alignItems: "center",
       backgroundColor: '#8DA242',
       padding: 20,
