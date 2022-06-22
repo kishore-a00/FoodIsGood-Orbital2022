@@ -1,3 +1,4 @@
+//NOT IN USE
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
 import { supabase } from "../lib/supabase";

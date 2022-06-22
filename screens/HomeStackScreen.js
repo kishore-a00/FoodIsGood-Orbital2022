@@ -5,7 +5,7 @@ import { FacultyScreen } from "./FacultyScreen"
 import { CanteenScreen } from "./CanteenScreen"
 import { StallScreen } from './StallScreen';
 import { ItemScreen } from './ItemScreen';
-import { ReviewScreen } from './ReviewScreen';
+import  ReviewScreen  from './ReviewScreen';
 
 const Stack = createNativeStackNavigator();
 

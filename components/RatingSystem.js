@@ -1,3 +1,4 @@
+//NOT IN USE
 import Slider from "@react-native-community/slider";
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
