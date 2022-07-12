@@ -24,6 +24,7 @@ export const HomeScreen = ({ navigation }) => {
     LoadFaculty();
   });
   return (
+    //Returns the list of faculties from supabase as clickable buttons
     <View style={styles.container}>
        <Text style={styles.headerText}> Select a Faculty:</Text>
       <FlatList
@@ -35,6 +36,12 @@ export const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+      {/* Create/update username button */}
+      <TouchableOpacity style={styles.outbutton} onPress={() => navigation.navigate("Username")}>
+        <Text style={styles.innerText}> Update username here! </Text>
+      </TouchableOpacity>
+
+      {/* Sign out button */}
       <TouchableOpacity style={styles.outbutton} onPress={() => supabase.auth.signOut()}>
         <Text style={styles.innerText}> Sign Out! </Text>
       </TouchableOpacity>
