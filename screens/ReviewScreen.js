@@ -21,10 +21,17 @@ export default function ReviewScreen({ navigation, route }) {
         .from("all_reviews")
         .insert([{ review: review, money: money, taste: taste, item_id: route.params.item_id, id: user_uuid }]);
       Keyboard.dismiss();
-      console.log(data);
-      console.log(error);
+
       //Alert + navigation to return back to the item screen
       Alert.alert("Review has been posted!", "Going back to item screen.", [{text: "Ok", onPress: () => navigation.goBack()}]);
+    };
+
+    const checkSubmission = () => {
+      if (review.length < 3) {
+        Alert.alert("Review is too short", "The review should be at least 3 characters long.", [{text: "Ok", onPress: () => console.log("Pressed")}])
+      } else {
+        addReview()
+      }
     };
   
     return (
@@ -75,7 +82,7 @@ export default function ReviewScreen({ navigation, route }) {
           </View>
 
           {/* Submit button to submit both the rating and the review to the database */}
-          <TouchableOpacity style={styles.button} onPress={() => addReview()}>
+          <TouchableOpacity style={styles.button} onPress={() => checkSubmission()}>
               <Text>Submit review!</Text>
           </TouchableOpacity>
   
