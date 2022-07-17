@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native
 import { supabase } from "../lib/supabase";
 
 //Stallscreen page which fetches all the items stored in the database based on the selected stall
-//can remove item_id which is routed
+//Add images and average review portion
 
 export const StallScreen = ({ navigation, route }) => {
   const [item, setItem] = useState("");
@@ -27,13 +27,16 @@ export const StallScreen = ({ navigation, route }) => {
   });
   return (
     <View style={styles.container}>
-       <Text style={styles.headerText}> Select an Item:</Text>
+      <Text style={styles.headerText}> Select an Item:</Text>
       <FlatList
         keyExtractor={(item) => item.item_id}
         data={item}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Item", {item_id: item.item_id, item_name: item.item_name})}>
-            <Text>{item.item_name}</Text>
+            {/** Insert image of food items here */}
+            <Text style={styles.itemNameText}>{item.item_name}</Text>
+            <Text style={styles.itemPriceText}>${item.price}</Text>
+            {/** Insert average ratings here */}
           </TouchableOpacity>
         )}
       />
@@ -48,17 +51,21 @@ const styles = StyleSheet.create({
       paddingHorizontal: 2
     },
     item: {
-      alignItems: "center",
+      alignItems: "flex-start",
       backgroundColor: '#8DA242',
-      padding: 20,
+      padding: 15,
       marginVertical: 10,
       marginHorizontal: 10,
+    },
+    itemNameText: {
+      fontSize: 15,
+      fontWeight: 'bold'
+    },
+    itemPriceText: {
+      fontSize: 12
     },
     headerText: {
       color: '#A7BC5B',
       fontSize: 32
     },
-    innerText: {
-      color: '#FFFFFF'
-    }
   });
