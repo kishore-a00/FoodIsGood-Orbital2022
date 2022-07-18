@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Stallscreen page which fetches all the items stored in the database based on the selected stall
@@ -34,6 +34,12 @@ export const StallScreen = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Item", {item_id: item.item_id, item_name: item.item_name})}>
             {/** Insert image of food items here */}
+            <View style={styles.image}>
+              <Image
+                source={{uri: item.image_url}}
+                style={{ width: 300, height: 200 }}
+              />
+            </View>
             <Text style={styles.itemNameText}>{item.item_name}</Text>
             <Text style={styles.itemPriceText}>${item.price}</Text>
             {/** Insert average ratings here */}
@@ -52,17 +58,17 @@ const styles = StyleSheet.create({
     },
     item: {
       alignItems: "flex-start",
-      backgroundColor: '#8DA242',
+      backgroundColor: '#caf0f8',
       padding: 15,
       marginVertical: 10,
       marginHorizontal: 10,
     },
     itemNameText: {
-      fontSize: 15,
+      fontSize: 18,
       fontWeight: 'bold'
     },
     itemPriceText: {
-      fontSize: 12
+      fontSize: 15
     },
     headerText: {
       color: '#A7BC5B',
