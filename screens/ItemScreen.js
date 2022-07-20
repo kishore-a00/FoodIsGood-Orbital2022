@@ -9,6 +9,7 @@ import {
   Alert,
   Button,
   Touchable,
+  ImageBackground,
 } from "react-native";
 import { supabase } from "../lib/supabase";
 
@@ -80,7 +81,7 @@ export const ItemScreen = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <View>
             <TouchableOpacity
-              style={styles.upvotebutton}
+              style={pressed ? styles.pressedupvotebutton : styles.upvotebutton}
               onPress={() => {
                 value_to_update = item.votes + 1;
                 update_id = item.review_id;
@@ -88,10 +89,24 @@ export const ItemScreen = ({ navigation, route }) => {
               }}
               disabled={pressed}
             >
-              <Text style={{ color: "white" }}>Vote!</Text>
-              <Text style={{ textAlign: "center", color: "white" }}>
-                {item.votes}
+              <Text style={{ color: "white", backgroundColor: "#000000c0" }}>
+                Upvote!
               </Text>
+              <ImageBackground
+                style={styles.upvoteimage}
+                source={require("../assets/thumbsup.png")}
+                resizeMode="contain"
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: 28,
+                  }}
+                >
+                  {item.votes}
+                </Text>
+              </ImageBackground>
             </TouchableOpacity>
             <Text style={styles.reviewtext}>
               Review: {item.review} {"\n"}
@@ -143,9 +158,19 @@ const styles = StyleSheet.create({
   },
   upvotebutton: {
     alignSelf: "flex-end",
-    backgroundColor: "#ff4500",
     padding: 5,
     marginVertical: 10,
     marginHorizontal: 10,
+  },
+  pressedupvotebutton: {
+    alignSelf: "flex-end",
+    padding: 5,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    opacity: 0.2,
+  },
+  upvoteimage: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
