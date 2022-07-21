@@ -23,11 +23,11 @@ export const ItemScreen = ({ navigation, route }) => {
   var value_to_update = 0;
   var update_id = 0;
 
-  //Filtering the database based on the item the user selected in StallScreen
+  //Filtering the review database based on the item the user selected in StallScreen
   const ShowReview = async () => {
     let { data: all_reviews, error } = await supabase
       .from("all_reviews")
-      .select("*")
+      .select("*, profiles(*)") //Query profiles table to fetch username based on uuid of each review
       .order("votes", { ascending: false })
       .eq("item_id", route.params.item_id);
     return { all_reviews, error };
@@ -77,7 +77,10 @@ export const ItemScreen = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          navigation.navigate("Review", { item_id: route.params.item_id })
+          navigation.navigate("Review", {
+            item_id: route.params.item_id,
+            item_name: route.params.item_name,
+          })
         }
       >
         <Text style={styles.buttontext}> Post a review! </Text>
@@ -171,6 +174,7 @@ export const ItemScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             <Text style={styles.reviewtext}>
+              Username: {item.profiles.username} {"\n"}
               Review: {item.review} {"\n"}
               Taste: {item.taste} {"\n"}
               Value for money: {item.money}
