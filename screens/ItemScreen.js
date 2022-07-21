@@ -77,7 +77,7 @@ export const ItemScreen = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          navigation.navigate("Review", { review_id: item.review_id })
+          navigation.navigate("Review", { review_id: route.params.item_id })
         }
       >
         <Text style={styles.buttontext}> Post a review! </Text>
