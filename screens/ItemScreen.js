@@ -47,6 +47,28 @@ export const ItemScreen = ({ navigation, route }) => {
       .update({ votes: value_to_update })
       .eq("review_id", update_id);
   };
+  const DeleteAlert = () => {
+    Alert.alert(
+      "Delete Review",
+      "Are you sure you want to delete this review?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => DeleteReview() },
+      ],
+      { cancelable: false }
+    );
+  };
+  // Function to delete the review from the database
+  const DeleteReview = async () => {
+    const { data, error } = await supabase
+      .from("all_reviews")
+      .delete()
+      .eq("review_id", update_id);
+  };
 
   return (
     <View>
@@ -55,7 +77,7 @@ export const ItemScreen = ({ navigation, route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          navigation.navigate("Review", { item_id: route.params.item_id })
+          navigation.navigate("Review", { review_id: item.review_id })
         }
       >
         <Text style={styles.buttontext}> Post a review! </Text>
@@ -80,34 +102,74 @@ export const ItemScreen = ({ navigation, route }) => {
         data={review}
         renderItem={({ item }) => (
           <View>
-            <TouchableOpacity
-              style={pressed ? styles.pressedupvotebutton : styles.upvotebutton}
-              onPress={() => {
-                value_to_update = item.votes + 1;
-                update_id = item.review_id;
-                updateVote();
-              }}
-              disabled={pressed}
-            >
-              <Text style={{ color: "white", backgroundColor: "#000000c0" }}>
-                Upvote!
-              </Text>
-              <ImageBackground
-                style={styles.upvoteimage}
-                source={require("../assets/thumbsup.png")}
-                resizeMode="contain"
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "white",
-                    fontSize: 28,
+            <View style={styles.reviewbuttons}>
+              {/* Edit button for user to edit their specific review */}
+              <View>
+                <TouchableOpacity
+                  style={
+                    item.id == supabase.auth.user().id
+                      ? styles.editbutton
+                      : styles.cannoteditbutton
+                  }
+                  onPress={() => {
+                    update_id = item.review_id;
+                    navigation.navigate("Edit Review", {
+                      review_id: item.review_id,
+                    });
                   }}
                 >
-                  {item.votes}
+                  <Text> Edit </Text>
+                </TouchableOpacity>
+              </View>
+              {/* Delete button for user to delete their specific review */}
+              <View>
+                <TouchableOpacity
+                  style={
+                    item.id == supabase.auth.user().id
+                      ? styles.editbutton
+                      : styles.cannoteditbutton
+                  }
+                  onPress={() => {
+                    update_id = item.review_id;
+                    DeleteAlert();
+                  }}
+                >
+                  <Text> Delete </Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={
+                  pressed ? styles.pressedupvotebutton : styles.upvotebutton
+                }
+                onPress={() => {
+                  value_to_update = item.votes + 1;
+                  update_id = item.review_id;
+                  updateVote();
+                }}
+                disabled={pressed}
+              >
+                <Text style={{ color: "white", backgroundColor: "#000000c0" }}>
+                  Upvote!
                 </Text>
-              </ImageBackground>
-            </TouchableOpacity>
+
+                {/* Minor bug with flex on image,caused it to stretch the whole screen */}
+                <ImageBackground
+                  style={styles.upvoteimage}
+                  source={require("../assets/images/thumbsup.png")}
+                  resizeMode="contain"
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 28,
+                    }}
+                  >
+                    {item.votes}
+                  </Text>
+                </ImageBackground>
+              </TouchableOpacity>
+            </View>
             <Text style={styles.reviewtext}>
               Review: {item.review} {"\n"}
               Taste: {item.taste} {"\n"}
@@ -158,19 +220,33 @@ const styles = StyleSheet.create({
   },
   upvotebutton: {
     alignSelf: "flex-end",
-    padding: 5,
     marginVertical: 10,
     marginHorizontal: 10,
   },
   pressedupvotebutton: {
     alignSelf: "flex-end",
-    padding: 5,
     marginVertical: 10,
     marginHorizontal: 10,
     opacity: 0.2,
   },
   upvoteimage: {
-    flex: 1,
     justifyContent: "center",
+  },
+  reviewbuttons: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  editbutton: {
+    flex: 1,
+    marginBottom: 5,
+    marginHorizontal: 5,
+    borderRadius: 4,
+    backgroundColor: "aquamarine",
+    justifyContent: "center",
+  },
+  cannoteditbutton: {
+    opacity: 0,
   },
 });
