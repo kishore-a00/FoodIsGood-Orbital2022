@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert, Image } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Canteenscreen page which fetches all the stalls stored in the database based on the selected canteen
@@ -48,6 +48,13 @@ export const CanteenScreen = ({ navigation, route }) => {
         data={stall}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Stall", {stall_id: item.stall_id, stall_name: item.stall_name})}>
+            {/** Insert image of food items here */}
+            <View style={styles.image}>
+              <Image
+                source={{uri: item.image_url}}
+                style={{ width: 300, height: 200 }}
+              />
+            </View>
             <Text>{item.stall_name}</Text>
           </TouchableOpacity>
         )}

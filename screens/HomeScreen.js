@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert, Image } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Homescreen page which fetches all the faculties stored in the database
@@ -45,6 +45,13 @@ export const HomeScreen = ({ navigation }) => {
         data={faculty}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Faculty", {faculty_id: item.faculty_id, faculty_name: item.faculty_name} )}>
+            {/** Insert image of food items here */}
+            <View style={styles.image}>
+              <Image
+                source={{uri: item.image_url}}
+                style={{ width: 300, height: 200 }}
+              />
+            </View>
             <Text>{item.faculty_name}</Text>
           </TouchableOpacity>
         )}
@@ -79,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#696969",
     padding: 20,
-    marginVertical: 30,
+    marginVertical: 10,
     marginHorizontal: 10,
   },
   headerText: {
