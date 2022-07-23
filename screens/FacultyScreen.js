@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Facultyscreen page which fetches all the canteens stored in the database based on the selected faculty
@@ -24,6 +24,22 @@ export const FacultyScreen = ({ navigation, route }) => {
   useEffect(() => {
     LoadCanteen();
   });
+
+  //Info button
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+      <Button 
+      onPress={() => 
+      Alert.alert("Welcome to the " + route.params.faculty_name + "!", 
+      "This page lists the canteens in this faculty.\n\n" +
+      "Click on one of the images to see the stalls in that canteen!\n\n" +
+      "To navigate back to the faculty page, press the left arrow on the top left hand corner of your screen.", 
+      [{text: "Ok", onPress: () => console.log("pressed")}])} 
+    title="?" />,
+    })
+  })
+
   return (
     <View style={styles.container}>
        <Text style={styles.headerText}> Select a Canteen:</Text>
@@ -31,7 +47,7 @@ export const FacultyScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item.canteen_id}
         data={canteen}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Canteen", {canteen_id: item.canteen_id})}>
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Canteen", {canteen_id: item.canteen_id, canteen_name: item.canteen_name})}>
             <Text>{item.canteen_name}</Text>
           </TouchableOpacity>
         )}

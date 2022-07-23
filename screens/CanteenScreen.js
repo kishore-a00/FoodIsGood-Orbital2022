@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Canteenscreen page which fetches all the stalls stored in the database based on the selected canteen
@@ -24,6 +24,22 @@ export const CanteenScreen = ({ navigation, route }) => {
   useEffect(() => {
     LoadStall();
   });
+
+  //Info button
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+      <Button 
+      onPress={() => 
+       Alert.alert("Welcome to the " + route.params.canteen_name + "!", 
+       "This page lists the stalls in this canteen.\n\n" +
+       "Click on one of the images to see the items sold in that stall!\n\n" +
+       "To navigate back to the canteen page, press the left arrow on the top left hand corner of your screen.", 
+       [{text: "Ok", onPress: () => console.log("pressed")}])} 
+     title="?" />,
+     })
+   })
+
   return (
     <View style={styles.container}>
        <Text style={styles.headerText}> Select a Stall:</Text>
@@ -31,7 +47,7 @@ export const CanteenScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item.stall_id}
         data={stall}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Stall", {stall_id: item.stall_id})}>
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Stall", {stall_id: item.stall_id, stall_name: item.stall_name})}>
             <Text>{item.stall_name}</Text>
           </TouchableOpacity>
         )}

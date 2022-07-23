@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
 
 import { HomeScreen } from "./HomeScreen";
 import { FacultyScreen } from "./FacultyScreen";
@@ -25,3 +26,6 @@ export const HomeStackScreen = () => {
     </Stack.Navigator>
   );
 };
+
+//For setting title as previous selection
+//options={({ route }) => ({ headerTitle: route.params.faculty_name , headerTitleStyle: { fontSize: 15},})}
