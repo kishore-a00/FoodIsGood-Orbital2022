@@ -70,6 +70,24 @@ export const ItemScreen = ({ navigation, route }) => {
       .eq("review_id", update_id);
   };
 
+//Info button
+React.useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () =>
+    <Button 
+    onPress={() => 
+      Alert.alert("Welcome to the " + route.params.item_name + " section!", 
+      "This page lists all the reviews of this item.\n\n" +
+      "These reviews were written by your fellow schoolmates!\n\n" +
+      "See a review you agree with? Click the \"Thumbs up\" upvote button!\n\n" +
+      "Want to write your own review? Click the \"Post a review\!\" button!\n\n" + 
+      "Written a review and wish to edit or delete it? Locate your review and select the corresponding button.\n\n" +
+      "To navigate back to the stall page, press the left arrow on the top left hand corner of your screen.", 
+      [{text: "Ok", onPress: () => console.log("pressed")}])} 
+    title="?" />,
+    })
+  })
+
   return (
     <View>
       {/* Post a review button */}
@@ -115,6 +133,7 @@ export const ItemScreen = ({ navigation, route }) => {
                     update_id = item.review_id;
                     navigation.navigate("Edit Review", {
                       review_id: item.review_id,
+                      item_name: route.params.item_name
                     });
                   }}
                 >
