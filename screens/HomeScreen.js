@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Button, Alert, Image } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Homescreen page which fetches all the faculties stored in the database
@@ -23,15 +23,34 @@ export const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     LoadFaculty();
   });
+
+  //Info button
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+      <Button 
+      onPress={() => 
+       Alert.alert("Welcome to the Home Screen!", 
+       "Click the image of a faculty to see the canteens available there!",
+       [{text: "Ok", onPress: () => console.log("pressed")}])} 
+     title="?" />,
+     })
+   })
   return (
     //Returns the list of faculties from supabase as clickable buttons
     <View style={styles.container}>
-       <Text style={styles.headerText}> Select a Faculty:</Text>
       <FlatList
         keyExtractor={(item) => item.faculty_id} 
         data={faculty}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Faculty", {faculty_id: item.faculty_id} )}>
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Faculty", {faculty_id: item.faculty_id, faculty_name: item.faculty_name} )}>
+            {/** Insert image of food items here */}
+            <View style={styles.image}>
+              <Image
+                source={{uri: item.image_url}}
+                style={{ width: 300, height: 200 }}
+              />
+            </View>
             <Text>{item.faculty_name}</Text>
           </TouchableOpacity>
         )}
@@ -66,12 +85,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#696969",
     padding: 20,
-    marginVertical: 30,
+    marginVertical: 10,
     marginHorizontal: 10,
-  },
-  headerText: {
-    color: "#A7BC5B",
-    fontSize: 32,
   },
   innerText: {
     color: "#FFFFFF",

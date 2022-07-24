@@ -70,10 +70,27 @@ export const ItemScreen = ({ navigation, route }) => {
       .eq("review_id", update_id);
   };
 
+//Info button
+React.useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () =>
+    <Button 
+    onPress={() => 
+      Alert.alert("Welcome to the " + route.params.item_name + " section!", 
+      "This page lists all the reviews of this item.\n\n" +
+      "These reviews were written by your fellow schoolmates!\n\n" +
+      "See a review you agree with? Click the \"Thumbs up\" upvote button!\n\n" +
+      "Want to write your own review? Click the \"Post a review\!\" button!\n\n" + 
+      "Written a review and wish to edit or delete it? Locate your review and select the corresponding button.\n\n" +
+      "To navigate back to the stall page, press the left arrow on the top left hand corner of your screen.", 
+      [{text: "Ok", onPress: () => console.log("pressed")}])} 
+    title="?" />,
+    })
+  })
+
   return (
     <View>
       {/* Post a review button */}
-      <Text style={styles.headertext}> {route.params.item_name} </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
@@ -86,14 +103,13 @@ export const ItemScreen = ({ navigation, route }) => {
         <Text style={styles.buttontext}> Post a review! </Text>
       </TouchableOpacity>
 
-      {/* 
+      {/* Image of food item.
       <View style={styles.image}>
         <Image
           source={require("../assets/img_test.jpg")}
           style={{ width: 200, height: 200 }}
         />
-      </View>
-      Image of food item. Unable to implement this at the moment*/}
+      </View> */}
 
       {/* Header for reviews section */}
       <Text style={styles.subheadertext}>Reviews:</Text>
@@ -118,6 +134,7 @@ export const ItemScreen = ({ navigation, route }) => {
                     update_id = item.review_id;
                     navigation.navigate("Edit Review", {
                       review_id: item.review_id,
+                      item_name: route.params.item_name
                     });
                   }}
                 >
@@ -173,12 +190,22 @@ export const ItemScreen = ({ navigation, route }) => {
                 </ImageBackground>
               </TouchableOpacity>
             </View>
-            <Text style={styles.reviewtext}>
-              Username: {item.profiles.username} {"\n"}
-              Review: {item.review} {"\n"}
-              Taste: {item.taste} {"\n"}
-              Value for money: {item.money}
-            </Text>
+            {/* Review component consists of the username on the left and the date posted on thr right.
+              * Followed by Ratings of value for money and taste over 5 on the left and right section respectively.
+              * Then a new line followed by the main review. */}
+            <View style={styles.reviewComponent}> 
+              <View style={styles.rowView}>
+                <Text style={styles.usernameText}>{item.profiles.username}</Text>
+                <Text style={styles.dateText}>{item.date_time}</Text>
+              </View>
+              <View style={styles.rowView}>
+                <Text style={styles.moneyText}>Value for money: <Text style={styles.bold}> {item.money}</Text>/5</Text> 
+                <Text style={styles.tasteText}>Taste: <Text style={styles.bold}> {item.taste}</Text>/5</Text>
+              </View>
+              <View>
+                <Text>{"\n"}{item.review}</Text>
+              </View>
+            </View>
           </View>
         )}
       />
@@ -215,12 +242,38 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: "center",
   },
-  reviewtext: {
-    alignItems: "center",
-    backgroundColor: "#8DA242",
+  reviewComponent: {
+    backgroundColor: "#edede9",
     padding: 15,
     marginVertical: 10,
     marginHorizontal: 10,
+  },
+  rowView: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  usernameText: {
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  dateText: {
+    fontSize: 11,
+    marginRight: 10
+  },
+  moneyText: {
+    fontSize: 14,
+    fontWeight: '600'
+  },
+  tasteText: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginRight: 10
+  },
+  reviewText: {
+    fontSize: 15
+  },
+  bold: {
+    fontWeight: "bold"
   },
   upvotebutton: {
     alignSelf: "flex-end",
@@ -247,7 +300,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginHorizontal: 5,
     borderRadius: 4,
-    backgroundColor: "aquamarine",
+    backgroundColor: "#d6ccc2",
     justifyContent: "center",
   },
   cannoteditbutton: {

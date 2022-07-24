@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Image, Button, Alert } from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Stallscreen page which fetches all the items stored in the database based on the selected stall
@@ -25,9 +25,24 @@ export const StallScreen = ({ navigation, route }) => {
   useEffect(() => {
     LoadItem();
   });
+
+  //Info button
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+      <Button 
+      onPress={() => 
+        Alert.alert("Welcome to the " + route.params.stall_name + " stall!", 
+        "This page lists the items in this stall.\n\n" +
+        "Click on one of the images to see how others have reviewed this item!\n\n" +
+        "To navigate back to the stall page, press the left arrow on the top left hand corner of your screen.", 
+        [{text: "Ok", onPress: () => console.log("pressed")}])} 
+      title="?" />,
+      })
+    })
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}> Select an Item:</Text>
       <FlatList
         keyExtractor={(item) => item.item_id}
         data={item}
@@ -69,9 +84,5 @@ const styles = StyleSheet.create({
     },
     itemPriceText: {
       fontSize: 15
-    },
-    headerText: {
-      color: '#A7BC5B',
-      fontSize: 32
     },
   });
