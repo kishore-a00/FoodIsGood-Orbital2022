@@ -91,7 +91,6 @@ React.useLayoutEffect(() => {
   return (
     <View>
       {/* Post a review button */}
-      <Text style={styles.headertext}> {route.params.item_name} </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
@@ -101,14 +100,13 @@ React.useLayoutEffect(() => {
         <Text style={styles.buttontext}> Post a review! </Text>
       </TouchableOpacity>
 
-      {/* 
+      {/* Image of food item.
       <View style={styles.image}>
         <Image
           source={require("../assets/img_test.jpg")}
           style={{ width: 200, height: 200 }}
         />
-      </View>
-      Image of food item. Unable to implement this at the moment*/}
+      </View> */}
 
       {/* Header for reviews section */}
       <Text style={styles.subheadertext}>Reviews:</Text>
@@ -189,12 +187,22 @@ React.useLayoutEffect(() => {
                 </ImageBackground>
               </TouchableOpacity>
             </View>
-            <Text style={styles.reviewtext}>
-              Username: {item.profiles.username} {"\n"}
-              Review: {item.review} {"\n"}
-              Taste: {item.taste} {"\n"}
-              Value for money: {item.money}
-            </Text>
+            {/* Review component consists of the username on the left and the date posted on thr right.
+              * Followed by Ratings of value for money and taste over 5 on the left and right section respectively.
+              * Then a new line followed by the main review. */}
+            <View style={styles.reviewComponent}> 
+              <View style={styles.rowView}>
+                <Text style={styles.usernameText}>{item.profiles.username}</Text>
+                <Text style={styles.dateText}>{item.date_time}</Text>
+              </View>
+              <View style={styles.rowView}>
+                <Text style={styles.moneyText}>Value for money: <Text style={styles.bold}> {item.money}</Text>/5</Text> 
+                <Text style={styles.tasteText}>Taste: <Text style={styles.bold}> {item.taste}</Text>/5</Text>
+              </View>
+              <View>
+                <Text>{"\n"}{item.review}</Text>
+              </View>
+            </View>
           </View>
         )}
       />
@@ -231,12 +239,38 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: "center",
   },
-  reviewtext: {
-    alignItems: "center",
-    backgroundColor: "#8DA242",
+  reviewComponent: {
+    backgroundColor: "#edede9",
     padding: 15,
     marginVertical: 10,
     marginHorizontal: 10,
+  },
+  rowView: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  usernameText: {
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  dateText: {
+    fontSize: 11,
+    marginRight: 10
+  },
+  moneyText: {
+    fontSize: 14,
+    fontWeight: '600'
+  },
+  tasteText: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginRight: 10
+  },
+  reviewText: {
+    fontSize: 15
+  },
+  bold: {
+    fontWeight: "bold"
   },
   upvotebutton: {
     alignSelf: "flex-end",
@@ -263,7 +297,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginHorizontal: 5,
     borderRadius: 4,
-    backgroundColor: "aquamarine",
+    backgroundColor: "#d6ccc2",
     justifyContent: "center",
   },
   cannoteditbutton: {
