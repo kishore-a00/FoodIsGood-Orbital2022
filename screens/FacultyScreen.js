@@ -42,7 +42,6 @@ export const FacultyScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-       <Text style={styles.headerText}> Select a Canteen:</Text>
       <FlatList
         keyExtractor={(item) => item.canteen_id}
         data={canteen}
@@ -75,10 +74,6 @@ const styles = StyleSheet.create({
       padding: 20,
       marginVertical: 10,
       marginHorizontal: 10,
-    },
-    headerText: {
-      color: '#A7BC5B',
-      fontSize: 32
     },
     innerText: {
       color: '#FFFFFF'
