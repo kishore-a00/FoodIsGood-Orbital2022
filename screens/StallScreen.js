@@ -43,7 +43,6 @@ export const StallScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}> Select an Item:</Text>
       <FlatList
         keyExtractor={(item) => item.item_id}
         data={item}
@@ -85,9 +84,5 @@ const styles = StyleSheet.create({
     },
     itemPriceText: {
       fontSize: 15
-    },
-    headerText: {
-      color: '#A7BC5B',
-      fontSize: 32
     },
   });

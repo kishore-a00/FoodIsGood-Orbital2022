@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Text, TextInput } from "react-native";
+import { StyleSheet, View, Alert, Text, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { ApiError, Session } from "@supabase/supabase-js";
 
@@ -76,49 +76,75 @@ export default function Account({navigation}) {
       setLoading(false);
     }
   }
+  //Info button
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+      <Button 
+      onPress={() => 
+        Alert.alert("Welcome to the username updating section!", 
+        "This page shows you your current username in the box.\n\n" +
+        "To update your username, delete the text in the box and type in your new username.\n\n" +
+        "Ready to change your username? Click the \"Update\" button!\n\n" +
+        "And that's it!\n\n", 
+        [{text: "Ok", onPress: () => console.log("pressed")}])} 
+      title="?" />,
+      })
+    })
 
   return (
-    <View>
-      <View style={styles.verticallySpaced}>
-        <Text>Username:</Text>
-        <TextInput
-          style={styles.input}
-          value={username || ""}
-          onChangeText={(text) => setUsername(text)}
-          placeholder="Type your new username here!"
-        />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View>
+        {/* Displays current username for user stored in database */}
+        <View style={styles.headerComponent}>
+          <Text style={styles.headerText}> 
+            Your current username is: 
+          </Text>
+          {/* Displays current username, if not username is found, shows the empty message */}
+          <Text style={styles.currUserText}>
+            {currUser || "seems empty :( \ncreate one below!"}  
+          </Text>
+        </View>
+
+        <View style={styles.middleComponent}>
+          <Text style={styles.headerText}>Type your new username below:</Text>
+        </View>
+        <View style={styles.verticallySpaced}>
+          <TextInput
+            style={styles.input}
+            value={username || ""}
+            onChangeText={(text) => setUsername(text)}
+            placeholder="Type your new username here!"
+          />
+        </View>
+
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <Button
+            title={loading ? "Loading ..." : "Update"}
+            onPress={() => {updateProfile({ username });
+              Alert.alert(
+                  "Username has been updated!", 
+                  "Going back to Home screen.", 
+                  [{text: "Ok", onPress: () => navigation.goBack()}]);
+              }}    
+            disabled={loading}
+          />
+        </View>     
       </View>
-
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? "Loading ..." : "Update"}
-          onPress={() => {updateProfile({ username });
-            Alert.alert(
-                "Username has been updated!", 
-                "Going back to Home screen.", 
-                [{text: "Ok", onPress: () => navigation.goBack()}]);
-            }}    
-          disabled={loading}
-        />
-      </View>
-      
-      {/* Displays current username for user stored in database */}
-      <Text>
-        Your current username is: {currUser} 
-      </Text>
-
-      {/* Info on how to change username */}
-      <Text>
-        How to change your username:
-        Delete the current username in the box above and key in your new username. 
-        Then click "Update".
-      </Text>
-
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
+  headerComponent: {
+    alignItems: "center",
+    marginTop: 50,
+    marginBottom: 20
+  },
+  middleComponent: {
+    alignItems:"center",
+    marginTop: 20
+  },
   container: {
     marginTop: 40,
     padding: 12,
@@ -136,5 +162,14 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "300",
+    alignItems: "center"
+  },
+  currUserText: {
+    fontSize: 30,
+    fontWeight: "900"
   }
 });

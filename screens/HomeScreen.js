@@ -39,7 +39,6 @@ export const HomeScreen = ({ navigation }) => {
   return (
     //Returns the list of faculties from supabase as clickable buttons
     <View style={styles.container}>
-       <Text style={styles.headerText}> Select a Faculty:</Text>
       <FlatList
         keyExtractor={(item) => item.faculty_id} 
         data={faculty}
@@ -88,10 +87,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 10,
     marginHorizontal: 10,
-  },
-  headerText: {
-    color: "#A7BC5B",
-    fontSize: 32,
   },
   innerText: {
     color: "#FFFFFF",
