@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, Image, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Image,
+  Button,
+  Alert,
+} from "react-native";
 import { supabase } from "../lib/supabase";
 
 //Stallscreen page which fetches all the items stored in the database based on the selected stall
@@ -12,7 +21,7 @@ export const StallScreen = ({ navigation, route }) => {
     let { data: item, error } = await supabase
       .from("item")
       .select("*")
-      .eq("stall_id", route.params.stall_id); 
+      .eq("stall_id", route.params.stall_id);
     return { item, error };
   };
   const LoadItem = async () => {
@@ -29,17 +38,22 @@ export const StallScreen = ({ navigation, route }) => {
   //Info button
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () =>
-      <Button 
-      onPress={() => 
-        Alert.alert("Welcome to the " + route.params.stall_name + " stall!", 
-        "This page lists the items in this stall.\n\n" +
-        "Click on one of the images to see how others have reviewed this item!\n\n" +
-        "To navigate back to the stall page, press the left arrow on the top left hand corner of your screen.", 
-        [{text: "Ok", onPress: () => console.log("pressed")}])} 
-      title="?" />,
-      })
-    })
+      headerRight: () => (
+        <Button
+          onPress={() =>
+            Alert.alert(
+              "Welcome to the " + route.params.stall_name + " stall!",
+              "This page lists the items in this stall.\n\n" +
+                "Click on one of the images to see how others have reviewed this item!\n\n" +
+                "To navigate back to the stall page, press the left arrow on the top left hand corner of your screen.",
+              [{ text: "Ok", onPress: () => console.log("pressed") }]
+            )
+          }
+          title="?"
+        />
+      ),
+    });
+  });
 
   return (
     <View style={styles.container}>
@@ -47,11 +61,19 @@ export const StallScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item.item_id}
         data={item}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Item", {item_id: item.item_id, item_name: item.item_name})}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() =>
+              navigation.navigate("Item", {
+                item_id: item.item_id,
+                item_name: item.item_name,
+              })
+            }
+          >
             {/** Insert image of food items here */}
             <View style={styles.image}>
               <Image
-                source={{uri: item.image_url}}
+                source={{ uri: item.image_url }}
                 style={{ width: 300, height: 200 }}
               />
             </View>
@@ -63,26 +85,27 @@ export const StallScreen = ({ navigation, route }) => {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#FFFFFF',
-      paddingHorizontal: 2
-    },
-    item: {
-      alignItems: "flex-start",
-      backgroundColor: '#caf0f8',
-      padding: 15,
-      marginVertical: 10,
-      marginHorizontal: 10,
-    },
-    itemNameText: {
-      fontSize: 18,
-      fontWeight: 'bold'
-    },
-    itemPriceText: {
-      fontSize: 15
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 2,
+  },
+  item: {
+    alignItems: "flex-start",
+    backgroundColor: "#caf0f8",
+    padding: 15,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    borderRadius: 10,
+  },
+  itemNameText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  itemPriceText: {
+    fontSize: 15,
+  },
+});
