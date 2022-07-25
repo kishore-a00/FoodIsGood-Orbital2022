@@ -84,7 +84,9 @@ export const HomeScreen = ({ navigation }) => {
           onPress={() =>
             Alert.alert(
               "Welcome to the Home Screen!",
-              "Click the image of a faculty to see the canteens available there!",
+              "Click the image of a faculty to see the canteens available there!\n\n" + 
+              "Click the \"Update username\!\" button to change/create your username\n\n" + 
+              "Click the \"Sign Out\!\" button to sign out of FoodIsGood.",
               [{ text: "Ok", onPress: () => console.log("pressed") }]
             )
           }
