@@ -15,7 +15,8 @@ import { supabase } from "../lib/supabase";
 
 export const HomeScreen = ({ navigation }) => {
   const [faculty, setFaculty] = useState("");
-
+  const [is_admin, setIsAdmin] = useState(false);
+  const user_id = supabase.auth.user().id;
   const ShowFaculty = async () => {
     let { data: faculty, error } = await supabase.from("faculty").select("*");
     return { faculty, error };
@@ -26,10 +27,53 @@ export const HomeScreen = ({ navigation }) => {
     // console.log(faculty);
     // console.log(error);
   };
+  //Add checking if admin here
+  //Fetching if the current user signed in has admin access
+  const CheckAdmin = async () => {
+    let { data: is_admin, error } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq('id', user_id)
+    return { is_admin, error }
+  }
+  const LoadAdmin = async () => {
+    const { is_admin, error} = await CheckAdmin();
+    setIsAdmin(is_admin)
+  }
+//Navigates to Update Screen page is the user has admin access
+  const HandleAdmin = async () => {
+    if (is_admin.length != 0) {
+      if (is_admin[0].is_admin == true) {
+        navigation.navigate("UpdateScreen")
+    } 
+    } else {
+       Alert.alert(
+         "No admin access :(",
+         "Only users with admin access can use this function.\n\n" + 
+         "If you are a stall owner or a student who would like to be a moderator, please contact the development team!",
+         [{ text: "Ok", onPress: () => console.log("pressed") }]
+         )
+      }
+  }
+  
+  const HandleSignOut = () => {
+    Alert.alert(
+      "You've clicked the sign out button.",
+      "Are you sure you would like to sign out?",
+      [{text: "Yes", onPress: () => supabase.auth.signOut()},
+      {text: "No", onPress: () => console.log("canceled sign out")}]
+    )
+  }
 
+  
   useEffect(() => {
     LoadFaculty();
-  });
+  }, []);
+
+  useEffect(() => {
+    LoadAdmin();
+  }, []);
+
 
   //Info button
   React.useLayoutEffect(() => {
@@ -75,6 +119,14 @@ export const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+      {/* Add image/stall button */}
+      <TouchableOpacity
+        style={styles.outbutton}
+        onPress={() => HandleAdmin()}
+      >
+        <Text style={styles.innerText}> Add image/stall information </Text>
+      </TouchableOpacity>
+      
       {/* Create/update username button */}
       <TouchableOpacity
         style={styles.outbutton}
@@ -86,7 +138,7 @@ export const HomeScreen = ({ navigation }) => {
       {/* Sign out button */}
       <TouchableOpacity
         style={styles.outbutton}
-        onPress={() => supabase.auth.signOut()}
+        onPress={() => HandleSignOut()}
       >
         <Text style={styles.innerText}> Sign Out! </Text>
       </TouchableOpacity>
