@@ -6,6 +6,7 @@ import { FacultyScreen } from "./FacultyScreen";
 import { CanteenScreen } from "./CanteenScreen";
 import { StallScreen } from "./StallScreen";
 import { ItemScreen } from "./ItemScreen";
+import { UpdateScreen } from "./UpdateScreen"
 import ReviewScreen from "./ReviewScreen";
 import EditReviewScreen from "./EditReviewScreen";
 import Username from "../components/Username";
@@ -17,6 +18,7 @@ export const HomeStackScreen = () => {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: "Select a Faculty:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
       <Stack.Screen name="Username" component={Username} options={{ headerTitle: "Update username:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
+      <Stack.Screen name="UpdateScreen" component={UpdateScreen} options={{ headerTitle: "Update information:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
       <Stack.Screen name="Faculty" component={FacultyScreen} options={{ headerTitle: "Select a Canteen:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
       <Stack.Screen name="Canteen" component={CanteenScreen} options={{ headerTitle: "Select a Stall:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
       <Stack.Screen name="Stall" component={StallScreen} options={{ headerTitle: "Select an Item:", headerTitleStyle: {fontSize: 18, fontWeight: "600", color: '#1d3557'}}} />
