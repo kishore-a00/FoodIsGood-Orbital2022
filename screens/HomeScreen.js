@@ -27,45 +27,47 @@ export const HomeScreen = ({ navigation }) => {
     // console.log(faculty);
     // console.log(error);
   };
-  
+
   //Fetching if the current user signed in has admin access
   const CheckAdmin = async () => {
     let { data: is_admin, error } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq('id', user_id)
-    return { is_admin, error }
-  }
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user_id);
+    return { is_admin, error };
+  };
   const LoadAdmin = async () => {
-    const { is_admin, error} = await CheckAdmin();
-    setIsAdmin(is_admin)
-  }
-  
-//Navigates to Update Screen page is the user has admin access
+    const { is_admin, error } = await CheckAdmin();
+    setIsAdmin(is_admin);
+  };
+
+  //Navigates to Update Screen page is the user has admin access
   const HandleAdmin = async () => {
     if (is_admin.length != 0) {
       if (is_admin[0].is_admin == true) {
-        navigation.navigate("UpdateScreen")
-      } 
-    } else {
-       Alert.alert(
-         "No admin access :(",
-         "Only users with admin access can use this function.\n\n" + 
-         "If you are a stall owner or a student who would like to be a moderator, please contact the development team!",
-         [{ text: "Ok", onPress: () => console.log("pressed") }]
-         )
+        navigation.navigate("UpdateScreen");
       }
-  }
-  
+    } else {
+      Alert.alert(
+        "No admin access :(",
+        "Only users with admin access can use this function.\n\n" +
+          "If you are a stall owner or a student who would like to be a moderator, please contact the development team!",
+        [{ text: "Ok", onPress: () => console.log("pressed") }]
+      );
+    }
+  };
+
   const HandleSignOut = () => {
     Alert.alert(
       "You've clicked the sign out button.",
       "Are you sure you would like to sign out?",
-      [{text: "Yes", onPress: () => supabase.auth.signOut()},
-      {text: "No", onPress: () => console.log("canceled sign out")}]
-    )
-  }
- 
+      [
+        { text: "Yes", onPress: () => supabase.auth.signOut() },
+        { text: "No", onPress: () => console.log("canceled sign out") },
+      ]
+    );
+  };
+
   useEffect(() => {
     LoadFaculty();
   }, []);
@@ -121,13 +123,13 @@ export const HomeScreen = ({ navigation }) => {
 
       <View style={styles.secondaryComponent}>
         {/* Add image/stall button */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.secbutton}
           onPress={() => HandleAdmin()}
         >
           <Text style={styles.innerText}> Update stall info </Text>
-        </TouchableOpacity>
-        
+        </TouchableOpacity> */}
+
         {/* Create/update username button */}
         <TouchableOpacity
           style={styles.secbutton}
@@ -135,15 +137,15 @@ export const HomeScreen = ({ navigation }) => {
         >
           <Text style={styles.innerText}> Update username! </Text>
         </TouchableOpacity>
-        </View>
+      </View>
 
-        {/* Sign out button */}
-        <TouchableOpacity
-          style={styles.outbutton}
-          onPress={() => HandleSignOut()}
-        >
-          <Text style={styles.innerText}> Sign Out! </Text>
-        </TouchableOpacity>
+      {/* Sign out button */}
+      <TouchableOpacity
+        style={styles.outbutton}
+        onPress={() => HandleSignOut()}
+      >
+        <Text style={styles.innerText}> Sign Out! </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
   },
   secondaryComponent: {
     flexDirection: "row",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
   },
   secbutton: {
     alignItems: "center",

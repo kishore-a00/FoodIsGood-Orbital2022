@@ -61,6 +61,17 @@ export default function ReviewScreen({ navigation, route }) {
       { text: "Ok", onPress: () => navigation.goBack() },
     ]);
   };
+  const checkSubmission = () => {
+    if (review.length < 3) {
+      Alert.alert(
+        "Review is too short",
+        "The review should be at least 3 characters long.",
+        [{ text: "Ok", onPress: () => console.log("Pressed") }]
+      );
+    } else {
+      UpdateReview();
+    }
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
