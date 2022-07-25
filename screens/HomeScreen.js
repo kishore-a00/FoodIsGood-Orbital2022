@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
     // console.log(faculty);
     // console.log(error);
   };
-  //Add checking if admin here
+  
   //Fetching if the current user signed in has admin access
   const CheckAdmin = async () => {
     let { data: is_admin, error } = await supabase
@@ -40,6 +40,7 @@ export const HomeScreen = ({ navigation }) => {
     const { is_admin, error} = await CheckAdmin();
     setIsAdmin(is_admin)
   }
+  
 //Navigates to Update Screen page is the user has admin access
   const HandleAdmin = async () => {
     if (is_admin.length != 0) {
@@ -64,8 +65,7 @@ export const HomeScreen = ({ navigation }) => {
       {text: "No", onPress: () => console.log("canceled sign out")}]
     )
   }
-
-  
+ 
   useEffect(() => {
     LoadFaculty();
   }, []);
@@ -74,6 +74,15 @@ export const HomeScreen = ({ navigation }) => {
     LoadAdmin();
   }, []);
 
+
+  const HandleSignOut = () => {
+    Alert.alert(
+      "You've clicked the sign out button.",
+      "Are you sure you would like to sign out?",
+      [{text: "Yes", onPress: () => supabase.auth.signOut()},
+      {text: "No", onPress: () => console.log("canceled sign out")}]
+    )
+  }
 
   //Info button
   React.useLayoutEffect(() => {
