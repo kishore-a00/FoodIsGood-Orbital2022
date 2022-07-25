@@ -46,7 +46,7 @@ export const HomeScreen = ({ navigation }) => {
     if (is_admin.length != 0) {
       if (is_admin[0].is_admin == true) {
         navigation.navigate("UpdateScreen")
-    } 
+      } 
     } else {
        Alert.alert(
          "No admin access :(",
@@ -73,16 +73,6 @@ export const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     LoadAdmin();
   }, []);
-
-
-  const HandleSignOut = () => {
-    Alert.alert(
-      "You've clicked the sign out button.",
-      "Are you sure you would like to sign out?",
-      [{text: "Yes", onPress: () => supabase.auth.signOut()},
-      {text: "No", onPress: () => console.log("canceled sign out")}]
-    )
-  }
 
   //Info button
   React.useLayoutEffect(() => {
@@ -128,29 +118,32 @@ export const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
-      {/* Add image/stall button */}
-      <TouchableOpacity
-        style={styles.outbutton}
-        onPress={() => HandleAdmin()}
-      >
-        <Text style={styles.innerText}> Add image/stall information </Text>
-      </TouchableOpacity>
-      
-      {/* Create/update username button */}
-      <TouchableOpacity
-        style={styles.outbutton}
-        onPress={() => navigation.navigate("Username")}
-      >
-        <Text style={styles.innerText}> Update username here! </Text>
-      </TouchableOpacity>
 
-      {/* Sign out button */}
-      <TouchableOpacity
-        style={styles.outbutton}
-        onPress={() => HandleSignOut()}
-      >
-        <Text style={styles.innerText}> Sign Out! </Text>
-      </TouchableOpacity>
+      <View style={styles.secondaryComponent}>
+        {/* Add image/stall button */}
+        <TouchableOpacity
+          style={styles.secbutton}
+          onPress={() => HandleAdmin()}
+        >
+          <Text style={styles.innerText}> Update stall info </Text>
+        </TouchableOpacity>
+        
+        {/* Create/update username button */}
+        <TouchableOpacity
+          style={styles.secbutton}
+          onPress={() => navigation.navigate("Username")}
+        >
+          <Text style={styles.innerText}> Update username! </Text>
+        </TouchableOpacity>
+        </View>
+
+        {/* Sign out button */}
+        <TouchableOpacity
+          style={styles.outbutton}
+          onPress={() => HandleSignOut()}
+        >
+          <Text style={styles.innerText}> Sign Out! </Text>
+        </TouchableOpacity>
     </View>
   );
 };
@@ -173,9 +166,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  outbutton: {
+  secondaryComponent: {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  secbutton: {
     alignItems: "center",
     backgroundColor: "#696969",
+    padding: 20,
+    marginVertical: 10,
+    marginHorizontal: 5,
+    borderRadius: 10,
+  },
+  outbutton: {
+    alignItems: "center",
+    backgroundColor: "#343a40",
     padding: 20,
     marginVertical: 10,
     marginHorizontal: 10,
