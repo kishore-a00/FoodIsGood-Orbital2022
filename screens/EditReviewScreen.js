@@ -35,9 +35,19 @@ export default function ReviewScreen({ navigation, route }) {
     "fantastic value!",
   ]; //Rating starts from 1 whereas index starts from 0
   const [review, setReview] = useState("");
+  var today;
 
   //const[modalVisible, setModalVisible] = useState(false);
   let user_uuid = supabase.auth.user().id;
+
+  // Function to get today's date
+  const currDate = () => {
+    today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+  }
 
   //This function will be called upon pressing the submit button.
   //It submits the review, the ratings, the user_id and the item id to the database
@@ -50,6 +60,7 @@ export default function ReviewScreen({ navigation, route }) {
         taste: taste,
         item_id: route.params.item_id,
         id: user_uuid,
+        date_time: today
       })
       .eq("review_id", route.params.review_id);
     Keyboard.dismiss();
@@ -62,6 +73,7 @@ export default function ReviewScreen({ navigation, route }) {
     ]);
   };
   const checkSubmission = () => {
+    currDate();
     if (review.length < 3) {
       Alert.alert(
         "Review is too short",

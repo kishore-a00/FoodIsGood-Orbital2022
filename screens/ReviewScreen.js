@@ -22,7 +22,7 @@ export default function ReviewScreen({ navigation, route }) {
   const [taste, setTaste] = useState(2); //Setting the numeric value for taste
   const [taste_desc, setTaste_desc] = useState("okay"); //Setting the description for how tasty the food is
   const arrayTaste = ["", "meh", "okay", "good", "very nice", "fantastic!"]; //Rating starts from 1 whereas index starts from 0
-
+  var today;
   //Storing the rating value for value
   const [money, setMoney] = useState(2); //Setting the numeric value for value
   const [money_desc, setMoney_desc] = useState("quite ex"); //Setting the description for how value for money the food is
@@ -38,6 +38,14 @@ export default function ReviewScreen({ navigation, route }) {
 
   //const[modalVisible, setModalVisible] = useState(false);
   let user_uuid = supabase.auth.user().id;
+
+  const currDate = () => {
+    today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+  }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -69,8 +77,10 @@ export default function ReviewScreen({ navigation, route }) {
         taste: taste,
         item_id: route.params.item_id,
         id: user_uuid,
+        date_time: today
       },
     ]);
+    console.log(error)
     Keyboard.dismiss();
 
     //Alert + navigation to return back to the item screen
@@ -80,6 +90,7 @@ export default function ReviewScreen({ navigation, route }) {
   };
 
   const checkSubmission = () => {
+    currDate();
     if (review.length < 3) {
       Alert.alert(
         "Review is too short",

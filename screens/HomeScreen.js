@@ -121,7 +121,7 @@ export const HomeScreen = ({ navigation }) => {
         )}
       />
 
-      <View style={styles.secondaryComponent}>
+
         {/* Add image/stall button */}
         {/* <TouchableOpacity
           style={styles.secbutton}
@@ -137,7 +137,6 @@ export const HomeScreen = ({ navigation }) => {
         >
           <Text style={styles.innerText}> Update username! </Text>
         </TouchableOpacity>
-      </View>
 
       {/* Sign out button */}
       <TouchableOpacity
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#696969",
     padding: 20,
     marginVertical: 10,
-    marginHorizontal: 5,
+    marginHorizontal: 10,
     borderRadius: 10,
   },
   outbutton: {
