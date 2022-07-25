@@ -26,10 +26,20 @@ export const HomeScreen = ({ navigation }) => {
     // console.log(faculty);
     // console.log(error);
   };
+  //Add checking if admin here
 
   useEffect(() => {
     LoadFaculty();
   });
+
+  const HandleSignOut = () => {
+    Alert.alert(
+      "You've clicked the sign out button.",
+      "Are you sure you would like to sign out?",
+      [{text: "Yes", onPress: () => supabase.auth.signOut()},
+      {text: "No", onPress: () => console.log("canceled sign out")}]
+    )
+  }
 
   //Info button
   React.useLayoutEffect(() => {
@@ -86,7 +96,7 @@ export const HomeScreen = ({ navigation }) => {
       {/* Sign out button */}
       <TouchableOpacity
         style={styles.outbutton}
-        onPress={() => supabase.auth.signOut()}
+        onPress={() => HandleSignOut()}
       >
         <Text style={styles.innerText}> Sign Out! </Text>
       </TouchableOpacity>
