@@ -40,7 +40,7 @@ export default function ReviewScreen({ navigation, route }) {
   //const[modalVisible, setModalVisible] = useState(false);
   let user_uuid = supabase.auth.user().id;
 
-  // Function to get today's date
+  // Function to get today's date adapted from https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
   const currDate = () => {
     today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
